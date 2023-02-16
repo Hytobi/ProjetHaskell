@@ -1,6 +1,6 @@
 {-# OPTIONS_GHC -Wall #-}
 
-module Cha4 (challenge5) where
+module Cha5 (challenge5) where
 
     import CPL
 
