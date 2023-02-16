@@ -11,4 +11,13 @@ tigre ou une peluche, et toutes les combinaisons était possibles ; il pouvait y
 
 ## Structure des fichiers
 
+### Partie 1
+
+- CPL, le code source.
+- Cha1, ..., Cha6, correspondant à l'épreuve du même nombre.
+
 ## Utilisation
+
+- ghci
+- :load ChaN (où 1<= N <= 6)
+- chalengeN
