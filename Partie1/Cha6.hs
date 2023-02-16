@@ -18,10 +18,12 @@ module Cha4 (challenge6) where
 
     -- tigre ou peluche
     constraint :: Formula
-    constraint = And (And
-      (Eqv (Var "p1") (Not (Var "t1")))
-      (Eqv (Var "p2") (Not (Var "t2"))))
-      (Eqv (Var "p3") (Not (Var "t3")))
+    constraint = And 
+                    (And
+                        (Eqv (Var "p1") (Not (Var "t1")))
+                        (Eqv (Var "p2") (Not (Var "t2")))
+                    )
+                    (Eqv (Var "p3") (Not (Var "t3")))
 
     -- Une seule  renferme une peluche, les autres un tigre && une seule ne ment pas
     reglement :: Formula
@@ -35,10 +37,13 @@ module Cha4 (challenge6) where
                         (And (Not door1) door2 )
                         (Not door3)))
                 (And (And (Not door1) (Not door2)) door3 ))
-            (And (And
-                (Imp (Var "p1") (And (Not (Var "p2")) (Not (Var "p3"))))
-                (Imp (Var "p2") (And (Not (Var "p1")) (Not (Var "p3")))))
-                (Imp (Var "p3") (And (Not (Var "p1")) (Not (Var "p2")))))
+            (And 
+                (And
+                    (Imp (Var "p1") (And (Not (Var "p2")) (Not (Var "p3"))))
+                    (Imp (Var "p2") (And (Not (Var "p1")) (Not (Var "p3"))))
+                )
+                (Imp (Var "p3") (And (Not (Var "p1")) (Not (Var "p2"))))
+            )
 
     -- La formule finale
     challenge6 :: Formula

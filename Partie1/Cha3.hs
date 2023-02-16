@@ -4,7 +4,6 @@ module Cha3 (challenge3) where
 
     import CPL
 
-
     -- Il y a un tigre dans cette cellule ou il y a une peluche dans l’autre.
     door1 :: Formula
     door1 = Or (Var "t1") (Var "p2")
