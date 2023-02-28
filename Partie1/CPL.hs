@@ -5,10 +5,10 @@ module CPL (
     World,
     genAllWorlds,
     sat,
-    findWorld,
+    findWorlds,
     testGenAllWorlds,
     testSat,
-    testFindWorld,
+    testFindWorlds,
     testAll
     ) where
 
@@ -67,8 +67,8 @@ module CPL (
         getVars' (Eqv phi psy) = getVars' phi ++ getVars' psy
 
     -- On vérifie si une formule est satisfiable
-    findWorld :: Formula -> [World]
-    findWorld phi = [w | w <- genAllWorlds (getVars phi), sat w phi]
+    findWorlds :: Formula -> [World]
+    findWorlds phi = [w | w <- genAllWorlds (getVars phi), sat w phi]
         
         
     -- Tests
@@ -121,20 +121,20 @@ module CPL (
         not (getVars (Or (Var "p1") (Not (Var "p1"))) == ["p1", "p1"])
         ]
 
-    testFindWorld :: [Bool]
-    testFindWorld = [
-        null (findWorld F),
-        findWorld T == [[]],
-        findWorld (Var "p1") == [["p1"]],
-        not (["p1"] `elem` findWorld (And (Var "p1") (Var "t1"))),
-        ["p1", "t1"] `elem` findWorld (And (Var "p1") (Var "t1")),
-        ["p1", "t1"] `elem` findWorld (Or (Var "p1") (Var "t1")),
-        ["p1", "t1"] `elem` findWorld (Imp (Var "p1") (Var "t1")),
-        ["p1", "t1"] `elem` findWorld (Eqv (Var "p1") (Var "t1")),
-        ["p1", "t1"] `elem` findWorld (And (Var "p1") (Var "t1")),
-        ["p1", "t1"] `elem` findWorld (And (Var "p1") (Var "t1")),
-        ["p1", "t1"] `elem` findWorld (And (Var "p1") (Var "t1")),
-        findWorld (Var "p1") == findWorld (Not (Not (Var "p1")))
+    testFindWorlds :: [Bool]
+    testFindWorlds = [
+        null (findWorlds F),
+        findWorlds T == [[]],
+        findWorlds (Var "p1") == [["p1"]],
+        not (["p1"] `elem` findWorlds (And (Var "p1") (Var "t1"))),
+        ["p1", "t1"] `elem` findWorlds (And (Var "p1") (Var "t1")),
+        ["p1", "t1"] `elem` findWorlds (Or (Var "p1") (Var "t1")),
+        ["p1", "t1"] `elem` findWorlds (Imp (Var "p1") (Var "t1")),
+        ["p1", "t1"] `elem` findWorlds (Eqv (Var "p1") (Var "t1")),
+        ["p1", "t1"] `elem` findWorlds (And (Var "p1") (Var "t1")),
+        ["p1", "t1"] `elem` findWorlds (And (Var "p1") (Var "t1")),
+        ["p1", "t1"] `elem` findWorlds (And (Var "p1") (Var "t1")),
+        findWorlds (Var "p1") == findWorlds (Not (Not (Var "p1")))
         ]
 
     test :: [Bool] -> Bool
@@ -148,7 +148,7 @@ module CPL (
             test testSat,
             test testDeleteDouble,
             test testGetVars,
-            test testFindWorld
+            test testFindWorlds
             ] == True = "Success!"
         | otherwise = "Fail!"
 
