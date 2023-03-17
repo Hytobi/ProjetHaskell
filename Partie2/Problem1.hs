@@ -1,4 +1,5 @@
 {-# OPTIONS_GHC -Wall #-}
+{-# OPTIONS_GHC -Wno-unused-top-binds #-}
 
 module Problem1 (problem1) where
 
@@ -13,11 +14,11 @@ module Problem1 (problem1) where
     indis "a" 00 = [00 ,10] -- Alice ne peut pas distinguer 00 de 10.
     indis "b" 00 = [00 ,01] -- Bob ne peut pas distinguer 00 de 01.
     indis "a" 01 = [01 ,11] -- Alice ne peut pas distinguer 01 de 11.
-    indis "b" 01 = [01 ,11] -- Bob ne peut pas distinguer 01 de 11.
-    indis "a" 10 = [10 ,11] -- Alice ne peut pas distinguer 10 de 11.
+    indis "b" 01 = [00 ,01] -- Bob ne peut pas distinguer 01 de 00.
+    indis "a" 10 = [00 ,10] -- Alice ne peut pas distinguer 10 de 00.
     indis "b" 10 = [10 ,11] -- Bob ne peut pas distinguer 10 de 11.
-    indis "a" 11 = [11]     -- Alice peut distinguer 11 de tous les autres mondes.
-    indis "b" 11 = [11]     -- Bob peut distinguer 11 de tous les autres mondes.
+    indis "a" 11 = [01,11]  -- Alice ne peut pas distinguer 11 de 01.
+    indis "b" 11 = [10,11]  -- Bob ne peut pas distinguer 11 de 10.
     indis _ _ = []          -- Tous les autres agents ne peuvent pas distinguer les autres mondes.
 
     s0 :: EpiState
