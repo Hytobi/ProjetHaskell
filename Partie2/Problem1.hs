@@ -45,15 +45,21 @@ module Problem1 (problem1) where
     Note : L’annonce que Bob sait que son propre visage n’est pas sale est fait implicitement le moment où
     il part laver son visage sans même pas regarder le miroir.-}
     problem1 :: EpiFormula
-    problem1 = And 
-                (And aliceIgn bobIgn) 
-                (And 
-                    (After fatherAnn aliceIgn) 
-                    (After 
-                        (Knows "b" (Var "bs")) 
-                        (Not (And aliceIgn bobIgn))
-                    )
-                )
+    problem1 =
+        And
+            ( And aliceIgn bobIgn )
+            ( After
+                ( After fatherAnn (Knows "b" (Var "bs")))
+                (Knows "a" (Not (Var "as")))
+            )
+
+    testEpisat :: [Bool]
+    testEpisat =
+        [ epiSat s0 fatherAnn,
+            epiSat s0 aliceIgn,
+            epiSat s0 bobIgn,
+            epiSat s0 problem1
+        ]
 
 
 

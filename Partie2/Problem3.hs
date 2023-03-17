@@ -40,3 +40,43 @@ module Problem3 (problem3) where
 
     s0 :: EpiState
     s0 = (interp, indis, 111)
+
+    fatherAnn :: EpiFormula
+    fatherAnn = Or (Var "as") (Or (Var "bs") (Var "cs"))
+
+    aliceIgn :: EpiFormula
+    aliceIgn = And (Not (Knows "a" (Var "as"))) (Not (Knows "a" (Not (Var "as"))))
+    
+    bobIgn :: EpiFormula
+    bobIgn = And (Not (Knows "b" (Var "bs"))) (Not (Knows "b" (Not (Var "bs"))))
+    
+    carolineIgn :: EpiFormula
+    carolineIgn = And (Not (Knows "c" (Var "cs"))) (Not (Knows "c" (Not (Var "cs"))))
+
+    everyoneIgn :: EpiFormula
+    everyoneIgn = And aliceIgn (And bobIgn carolineIgn)
+
+    problem3 :: EpiFormula
+    problem3 =
+        And everyoneIgn
+            ( After fatherAnn
+                ( And everyoneIgn
+                    ( After everyoneIgn
+                        ( And everyoneIgn
+                            ( After everyoneIgn
+                                (And (Not aliceIgn) 
+                                    (And (Not bobIgn) (Not carolineIgn)))
+                            )
+                        )
+                    )
+                )
+            )
+
+    testEpisat :: [Bool]
+    testEpisat =
+        [ epiSat s0 fatherAnn,
+            epiSat s0 aliceIgn,
+            epiSat s0 bobIgn,
+            epiSat s0 carolineIgn,
+            epiSat s0 problem3
+        ]

@@ -5,7 +5,21 @@ module Problem2 (problem2) where
 
     import EL
 
+    interp :: Prop -> [World]
+    interp "as" = [10 ,11]  -- Alice est sale dans les mondes 10 et 11.
+    interp "bs" = [01 ,11]  -- Bob est sale dans les mondes 01 et 11.
+    interp _ = []           -- Toutes les autres propositions sont fausses.
 
+    indis :: Agent -> World -> [World]
+    indis "a" 00 = [00 ,10] -- Alice ne peut pas distinguer 00 de 10.
+    indis "b" 00 = [00 ,01] -- Bob ne peut pas distinguer 00 de 01.
+    indis "a" 01 = [01 ,11] -- Alice ne peut pas distinguer 01 de 11.
+    indis "b" 01 = [00 ,01] -- Bob ne peut pas distinguer 01 de 00.
+    indis "a" 10 = [00 ,10] -- Alice ne peut pas distinguer 10 de 00.
+    indis "b" 10 = [10 ,11] -- Bob ne peut pas distinguer 10 de 11.
+    indis "a" 11 = [01,11]  -- Alice ne peut pas distinguer 11 de 01.
+    indis "b" 11 = [10,11]  -- Bob ne peut pas distinguer 11 de 10.
+    indis _ _ = []          -- Tous les autres agents ne peuvent pas distinguer les autres mondes.
 
     -- Les deux ont leurs visages sales
     s0 :: EpiState
@@ -30,12 +44,23 @@ module Problem2 (problem2) where
     Il répète sa réquisition : « Celui qui sait si son propre visage est sale, fait un pas en avant. » Cette
     fois, Alice et Bob font un pas en avant en même temps.-}
     problem2 :: EpiFormula
-    problem2 = And 
-                (And aliceIgn bobIgn) 
-                (And 
-                    (After fatherAnn (And aliceIgn bobIgn) ) 
-                    (After 
-                        fatherAnn 
-                        (Not (And aliceIgn bobIgn))
+    problem2 =   And
+                    ( And aliceIgn bobIgn )
+                    ( After
+                        ( After
+                            fatherAnn
+                            ( And aliceIgn bobIgn )
+                        )
+                        ( And
+                            (Knows "a" (Var "as"))
+                            (Knows "b" (Var "bs"))
+                        )
                     )
-                )
+
+    testEpisat :: [Bool]
+    testEpisat =
+        [ epiSat s0 fatherAnn,
+            epiSat s0 aliceIgn,
+            epiSat s0 bobIgn,
+            epiSat s0 problem2
+        ]
