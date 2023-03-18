@@ -1,5 +1,5 @@
 {-# OPTIONS_GHC -Wall #-}
-{-# OPTIONSGHC -Wno-unused-top-binds #-}
+{-# OPTIONS_GHC -Wno-unused-top-binds #-}
 
 module Problem4 (problem4) where
 
@@ -34,24 +34,45 @@ module Problem4 (problem4) where
     indis _ _  = []
 
     s0 :: EpiState
-    s0 = (interp, indis, 01)
+    s0 = (interp, indis, 12)
 
     anneIgn :: EpiFormula
     anneIgn =
-        And (Not (Knows "a" (Var "b0")))
-        (And (Not (Knows "a" (Var "b1")))
-        (And (Not (Knows "a" (Var "b2")))
-        (And (Not (Knows "a" (Var "b3")))
-        (And (Not (Knows "a" (Var "b4")))))))
+        And 
+            (Not (Knows "a" (Var "b0")))
+            (And 
+                (Not (Knows "a" (Var "b1")))
+                (And 
+                    (Not (Knows "a" (Var "b2")))
+                    (And 
+                        (Not (Knows "a" (Var "b3")))
+                        (Not (Knows "a" (Var "b4"))))))
 
     billIgn :: EpiFormula
-    billIgn = And (Not (Knows "b" (Var "bs"))) (Not (Knows "b" (Not (Var "bs"))))
+    billIgn = 
+        And 
+            (Not (Knows "b" (Var "a0")))
+            (And 
+                (Not (Knows "b" (Var "a1")))
+                (And 
+                    (Not (Knows "b" (Var "a2")))
+                    (And 
+                        (Not (Knows "b" (Var "a3")))
+                        (Not (Knows "b" (Var "a4"))))))
 
     problem4 :: EpiFormula
     problem4 =
-    And
-        (And aliceIgn bobIgn)
-        (After fatherAnn (And (And aliceIgn (Not bobIgn)) (After (Not bobIgn) (Not aliceIgn))))
-   
-
+        And
+            (And anneIgn billIgn)
+            (After anneIgn 
+                (After 
+                    billIgn 
+                    (Not anneIgn)))
+    
+    testEpisat :: [Bool]
+    testEpisat =
+        [ epiSat s0 anneIgn,
+            epiSat s0 billIgn,
+            epiSat s0 problem4
+        ]
 
